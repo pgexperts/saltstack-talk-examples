@@ -1,0 +1,30 @@
+listen_addresses = '*'
+max_connections = {{ conn }}
+{% if ((grains.mem_total|int) / 4)|round|int <= 8096 -%}
+shared_buffers = {{ ((grains.mem_total|int) / 4)|round|int }}MB
+{% else -%}
+shared_buffers = 8GB
+{% endif -%}
+work_mem = {{ ((grains.mem_total|int) / conn * 2) |round|int }}MB
+{% if ((grains.mem_total|int) / 16)|round|int <= 2048 -%}
+maintenance_work_mem = {{ ((grains.mem_total|int) / 16)|round|int }}MB
+{% else -%}
+maintenance_work_mem = 2GB
+{% endif -%}
+temp_buffers = {{ ((grains.mem_total|int) / conn) |round|int }}MB
+checkpoint_completion_target = 0.9
+effective_cache_size = {{ (((grains.mem_total|int) * 3) / 4)|round|int }}MB
+checkpoint_segments = 15
+logging_collector = on
+log_destination = 'csvlog'
+log_directory = 'pg_log'
+log_filename = 'postgresql-%a.log'
+log_file_mode = 0644
+log_truncate_on_rotation = on
+log_rotation_age = 1d
+log_rotation_size = 0
+lc_messages = 'C'
+lc_monetary = 'C'
+lc_numeric = 'C'
+lc_time = 'C'
+default_text_search_config = 'pg_catalog.english'
