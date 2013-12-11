@@ -9,7 +9,9 @@ pgbouncer-pkgs:
     - require:
       - pkg: postgresql.org-repo
 
-{% for host, value in salt['mine.get']('roles:' + 'postgresql_server', 'grains.items', expr_form = 'grain').items() %}
+# We only grab the first item in the list of items here for safety, because if
+# we loop over the list and there is more than one item, it would break our state
+{% set host, value = salt['mine.get']('roles:' + 'postgresql_server', 'grains.items', expr_form = 'grain').items()[0] %}
 {% set postgresql_server_ip = value.ip_interfaces['eth1'][0] %}
 
 /etc/pgbouncer/pgbouncer.ini:
@@ -48,7 +50,6 @@ update-userlist-cron:
   - user: root
   - hour: 0
 
-{% endfor %}
 
 roles:
   grains.present:
