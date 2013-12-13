@@ -42,6 +42,7 @@ pg-initdb:
 postgresql-{{ pgversion }}:
   service:
     - running
+    - enable: True
     - require:
       - file: /var/lib/pgsql/{{ pgversion }}/data/postgresql.conf
       - file: /var/lib/pgsql/{{ pgversion }}/data/pg_hba.conf

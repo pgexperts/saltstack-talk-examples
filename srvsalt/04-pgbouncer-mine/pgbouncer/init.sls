@@ -58,5 +58,6 @@ roles:
 pgbouncer:
   service:
     - running
+    - enable: True
     - watch:
       - file: /etc/pgbouncer/pgbouncer.ini
