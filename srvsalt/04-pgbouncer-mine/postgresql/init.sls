@@ -26,7 +26,7 @@ pg-initdb:
       - group: postgres
       - replace: False
       - context:
-         conn: 100
+         max_connections: 100
       - require:
         - cmd: pg-initdb
 
